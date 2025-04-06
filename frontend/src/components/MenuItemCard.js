@@ -7,8 +7,8 @@ function MenuItemCard({ item }) {
                 src={item.image_url}
                 alt={item.name}
                 style={{
-                    width: "500px", // Ancho fijo
-                    height: "300px", // Alto fijo
+                    width: "350px", // Ancho fijo
+                    height: "350px", // Alto fijo
                     objectFit: "cover", // Ajustar la imagen para que no se deforme
                     borderRadius: "10px", // Bordes redondeados
                     margin: "0 auto", // Centrar la imagen

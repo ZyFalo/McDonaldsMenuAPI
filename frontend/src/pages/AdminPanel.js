@@ -31,6 +31,21 @@ function AdminPanel() {
         }
     };
 
+    // Manejar la eliminación de todos los ítems
+    const handleDeleteAll = () => {
+        if (window.confirm("¿Estás seguro de que deseas eliminar todos los ítems del menú? Esta acción no se puede deshacer.")) {
+            axiosInstance.delete("/menu/all")
+                .then((response) => {
+                    alert(response.data.message);
+                    setMenuItems([]); // Vaciar la lista de ítems
+                })
+                .catch((error) => {
+                    console.error("Error al eliminar todos los ítems:", error);
+                    alert("No se pudieron eliminar los ítems. Inténtalo de nuevo.");
+                });
+        }
+    };
+
     // Manejar el cierre de sesión
     const handleLogout = () => {
         localStorage.removeItem("token"); // Eliminar el token del almacenamiento local
@@ -49,6 +64,8 @@ function AdminPanel() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginBottom: "20px",
+                marginLeft: "280px",
+                marginRight: "280px",
             }}>
                 <h1 style={{ color: "#d52b1e" }}>Panel de Administración</h1>
                 <button
@@ -65,25 +82,41 @@ function AdminPanel() {
                     Cerrar Sesión
                 </button>
             </header>
-            <button
-                onClick={() => navigate("/admin/create")}
-                style={{
-                    padding: "10px 20px",
-                    backgroundColor: "#d52b1e",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    marginBottom: "20px",
-                }}
-            >
-                Crear Nuevo Ítem
-            </button>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px", marginLeft: "280px", marginRight: "280px", }}>
+                <button
+                    onClick={() => navigate("/admin/create")}
+                    style={{
+                        padding: "10px 20px",
+                        backgroundColor: "#d52b1e",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                    }}
+                >
+                    Crear Nuevo Ítem
+                </button>
+                <button
+                    onClick={handleDeleteAll}
+                    style={{
+                        padding: "10px 20px",
+                        backgroundColor: "#555",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                    }}
+                >
+                    Eliminar Todos los Ítems
+                </button>
+            </div>
             <div style={{
                 backgroundColor: "white",
                 borderRadius: "10px",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                 padding: "20px",
+                marginLeft: "300px",
+                marginRight: "300px",
             }}>
                 {menuItems.length > 0 ? (
                     <table style={{

@@ -2,9 +2,9 @@ from fastapi import APIRouter, HTTPException, Depends
 from models import MenuItem, UpdateMenuItem
 from database import menu_collection
 from bson import ObjectId
-from typing import List
+from typing import List, Union
 from auth import get_current_user, User
-from pydantic import HttpUrl  # Importar HttpUrl
+from pydantic import HttpUrl
 
 router = APIRouter(
     prefix="/menu",
@@ -22,21 +22,37 @@ def menu_item_helper(item) -> dict:
         "image_url": item.get("image_url")  # Incluir el campo image_url
     }
 
-# Crear un nuevo ítem en el menú (solo admin)
-@router.post("/", response_model=dict)
-async def create_menu_item(item: MenuItem, current_user: User = Depends(get_current_user)):
+# Crear uno o varios ítems en el menú (solo admin)
+@router.post("/", response_model=Union[dict, List[dict]])
+async def create_menu_item(
+    items: Union[MenuItem, List[MenuItem]], 
+    current_user: User = Depends(get_current_user)
+):
     try:
-        # Convertir el modelo a un diccionario y convertir HttpUrl a str
-        new_item = item.model_dump()
-        if isinstance(new_item.get("image_url"), HttpUrl):
-            new_item["image_url"] = str(new_item["image_url"])  # Convertir HttpUrl a str
+        # Si es un solo objeto, lo convertimos en una lista para procesarlo uniformemente
+        if isinstance(items, MenuItem):
+            items = [items]
 
-        # Insertar en la base de datos
-        result = menu_collection.insert_one(new_item)
-        # Recuperar el ítem creado
-        created_item = menu_collection.find_one({"_id": result.inserted_id})
-        # Devolver el ítem creado
-        return menu_item_helper(created_item)
+        created_items = []
+        for item in items:
+            # Convertir el modelo a un diccionario y convertir HttpUrl a str
+            new_item = item.model_dump()
+            if isinstance(new_item.get("image_url"), HttpUrl):
+                new_item["image_url"] = str(new_item["image_url"])  # Convertir HttpUrl a str
+
+            # Insertar en la base de datos
+            result = menu_collection.insert_one(new_item)
+            # Recuperar el ítem creado
+            created_item = menu_collection.find_one({"_id": result.inserted_id})
+            created_items.append(menu_item_helper(created_item))
+
+        # Si solo se creó un ítem, devolverlo como un objeto
+        if len(created_items) == 1:
+            return created_items[0]
+
+        # Si se crearon varios ítems, devolverlos como una lista
+        return created_items
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al crear el ítem: {str(e)}")
 
@@ -85,6 +101,20 @@ async def update_menu_item(item_id: str, item: UpdateMenuItem, current_user: Use
         # Manejar otros errores y devolver un error 500
         raise HTTPException(status_code=500, detail=f"Error al actualizar el ítem: {str(e)}")
     
+# Eliminar todos los ítems del menú (solo admin)
+@router.delete("/all", response_model=dict)
+async def delete_all_menu_items(current_user: User = Depends(get_current_user)):
+    try:
+        # Verificar que el usuario autenticado sea un administrador
+        if not current_user:
+            raise HTTPException(status_code=403, detail="No autorizado")
+
+        # Eliminar todos los documentos de la colección
+        result = menu_collection.delete_many({})
+        return {"message": f"Se eliminaron {result.deleted_count} ítems del menú."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al eliminar los ítems: {str(e)}")
+
 # Eliminar un ítem del menú (solo admin)
 @router.delete("/{item_id}", response_model=dict)
 async def delete_menu_item(item_id: str, current_user: User = Depends(get_current_user)):

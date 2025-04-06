@@ -42,7 +42,10 @@ def create_test_item(auth_headers):
     # Crear un ítem de prueba antes de cada prueba
     response = client.post("/menu/", json=test_item, headers=auth_headers)
     assert response.status_code == 200
-    return response.json()
+    created_item = response.json()
+    yield created_item  # Proporcionar el ítem creado a la prueba
+    # Eliminar el ítem después de la prueba
+    client.delete(f"/menu/{created_item['id']}", headers=auth_headers)
 
 def test_create_menu_item(auth_headers):
     response = client.post("/menu/", json=test_item, headers=auth_headers)

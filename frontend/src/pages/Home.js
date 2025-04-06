@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosConfig";
 import MenuItemCard from "../components/MenuItemCard";
-import { useNavigate } from "react-router-dom";
 
 function Home() {
     const [menuItems, setMenuItems] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         // Solicitud al endpoint GET /menu/
@@ -65,34 +63,40 @@ function Home() {
             {/* Contenido del Menú */}
             <main style={{ padding: "20px" }}>
                 <h2 style={{ color: "#d52b1e", textAlign: "center" }}>Nuestros Productos</h2>
-                {Object.keys(groupedItems).map((category) => (
-                    <div key={category} style={{ marginBottom: "40px" }}>
-                        <h3 style={{ color: "#d52b1e", textAlign: "left", marginBottom: "10px" }}>{category}</h3>
-                        <div
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(4, 1fr)", // 3 columnas
-                                gap: "20px",
-                                justifyContent: "center",
-                                padding: "10px",
-                            }}
-                        >
-                            {groupedItems[category].map((item) => (
-                                <div
-                                    key={item.id}
-                                    style={{
-                                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                                        borderRadius: "10px",
-                                        backgroundColor: "white",
-                                        padding: "10px",
-                                    }}
-                                >
-                                    <MenuItemCard item={item} />
-                                </div>
-                            ))}
+                {menuItems.length === 0 ? (
+                    <p style={{ textAlign: "center", color: "#555", fontSize: "18px", marginTop: "20px" }}>
+                        No hay productos disponibles en el menú en este momento.
+                    </p>
+                ) : (
+                    Object.keys(groupedItems).map((category) => (
+                        <div key={category} style={{ marginBottom: "40px"}}>
+                            <h3 style={{ color: "#d52b1e", textAlign: "left", marginBottom: "10px", textAlign: "center" }}>{category}</h3>
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(3, 1fr)", // 3 columnas
+                                    gap: "20px",
+                                    justifyContent: "center",
+                                    padding: "10px",
+                                }}
+                            >
+                                {groupedItems[category].map((item) => (
+                                    <div
+                                        key={item.id}
+                                        style={{
+                                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                            borderRadius: "10px",
+                                            backgroundColor: "white",
+                                            padding: "10px",
+                                        }}
+                                    >
+                                        <MenuItemCard item={item} />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </main>
 
             {/* Footer */}
