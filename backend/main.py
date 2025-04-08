@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-from auth import authenticate_user, create_access_token, User, Token, hash_password
+from .auth import authenticate_user, create_access_token, User, Token, hash_password
 from routers import menu
 from database import db
 
