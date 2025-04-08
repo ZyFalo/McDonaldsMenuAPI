@@ -373,7 +373,7 @@ function Home() {
                     textAlign: "center" 
                 }}>
                     <img 
-                        src="https://www.mcdonalds.com/content/dam/sites/usa/nfl/logo/mcdonalds_golden_arches_logo_pms_124_RGB_100x100.jpg" 
+                        src="https://www.freepnglogos.com/uploads/mcdonalds-png-logo/mcdonalds-logo-brand-png-clip-art-30.png" 
                         alt="McDonald's Arches" 
                         style={{ height: "50px", marginBottom: "20px" }} 
                     />
