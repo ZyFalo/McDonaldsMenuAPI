@@ -1,7 +1,6 @@
-fastapi==0.100.0
-hypercorn==0.14.4
-pymongo==4.5.0
-python-jose==3.3.0
-passlib[bcrypt]==1.7.4
-pydantic==1.10.7
-bson==0.5.10
+fastapi
+pydantic
+hypercorn
+pymongo
+python-jose
+passlib[bcrypt]
