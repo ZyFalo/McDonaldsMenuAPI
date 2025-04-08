@@ -58,7 +58,7 @@ function Login() {
                 textAlign: "center",
             }}>
                 <img 
-                    src="https://png.pngtree.com/png-vector/20240529/ourmid/pngtree-mcdonald-logo-logo-white-circle-black-vector-png-image_6974971.png" 
+                    src="https://www.freepnglogos.com/uploads/mcdonalds-png-logo/mcdonalds-logo-brand-png-clip-art-30.png" 
                     alt="McDonald's Logo" 
                     style={{ width: "80px", marginBottom: "20px" }} 
                 />
