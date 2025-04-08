@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [formData, setFormData] = useState({ username: "", password: "" });
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -14,12 +15,14 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
         const data = new URLSearchParams();
         data.append("username", formData.username);
         data.append("password", formData.password);
 
-        axios.post("http://127.0.0.1:8000/token", data, {
+        // Usar axiosInstance en lugar de axios directo
+        axiosInstance.post("/token", data, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
@@ -32,6 +35,7 @@ function Login() {
             .catch((error) => {
                 console.error("Error al iniciar sesión:", error);
                 setError("Credenciales inválidas. Inténtalo de nuevo.");
+                setLoading(false);
             });
     };
 
@@ -41,19 +45,29 @@ function Login() {
             justifyContent: "center",
             alignItems: "center",
             height: "100vh",
-            backgroundColor: "#ffcc00", // Fondo amarillo clásico de McDonald's
-            fontFamily: "Arial, sans-serif",
+            background: "linear-gradient(135deg, #ffcc00 0%, #ffbc0d 100%)",
+            fontFamily: "'Speedee', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
         }}>
             <div style={{
                 backgroundColor: "white",
-                padding: "30px",
-                borderRadius: "10px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                padding: "40px",
+                borderRadius: "12px",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
                 width: "100%",
-                maxWidth: "400px",
+                maxWidth: "420px",
                 textAlign: "center",
             }}>
-                <h1 style={{ color: "#d52b1e", marginBottom: "20px" }}>Iniciar Sesión</h1>
+                <img 
+                    src="https://www.mcdonalds.com/content/dam/sites/usa/nfl/logo/mcdonalds-logo-full-color-128x128.jpg" 
+                    alt="McDonald's Logo" 
+                    style={{ width: "80px", marginBottom: "20px" }} 
+                />
+                <h1 style={{ 
+                    color: "#292929", 
+                    marginBottom: "25px", 
+                    fontSize: "28px", 
+                    fontWeight: "700" 
+                }}>Iniciar Sesión</h1>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -64,11 +78,16 @@ function Login() {
                         required
                         style={{
                             width: "100%",
-                            padding: "10px",
-                            marginBottom: "15px",
-                            border: "1px solid #ccc",
-                            borderRadius: "5px",
+                            padding: "14px",
+                            marginBottom: "16px",
+                            border: "1px solid #e0e0e0",
+                            borderRadius: "8px",
                             fontSize: "16px",
+                            outline: "none",
+                            transition: "border-color 0.3s",
+                            ":focus": {
+                                borderColor: "#ffbc0d"
+                            }
                         }}
                     />
                     <input
@@ -80,42 +99,55 @@ function Login() {
                         required
                         style={{
                             width: "100%",
-                            padding: "10px",
-                            marginBottom: "15px",
-                            border: "1px solid #ccc",
-                            borderRadius: "5px",
+                            padding: "14px",
+                            marginBottom: "20px",
+                            border: "1px solid #e0e0e0",
+                            borderRadius: "8px",
                             fontSize: "16px",
+                            outline: "none"
                         }}
                     />
                     <button
                         type="submit"
+                        disabled={loading}
                         style={{
                             width: "100%",
-                            padding: "10px",
-                            backgroundColor: "#d52b1e",
-                            color: "white",
+                            padding: "14px",
+                            backgroundColor: "#ffbc0d",
+                            color: "#292929",
                             border: "none",
-                            borderRadius: "5px",
+                            borderRadius: "8px",
                             fontSize: "16px",
-                            cursor: "pointer",
+                            fontWeight: "700",
+                            cursor: loading ? "not-allowed" : "pointer",
+                            opacity: loading ? 0.8 : 1,
+                            transition: "all 0.2s ease",
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
                         }}
                     >
-                        Iniciar Sesión
+                        {loading ? "Procesando..." : "Iniciar Sesión"}
                     </button>
                 </form>
-                {error && <p style={{ color: "red", marginTop: "15px" }}>{error}</p>}
+                {error && <p style={{ 
+                    color: "#d32b1e", 
+                    marginTop: "15px", 
+                    fontSize: "14px",
+                    fontWeight: "500"
+                }}>{error}</p>}
                 <button
                     onClick={() => navigate("/")}
                     style={{
-                        marginTop: "15px",
-                        padding: "10px",
-                        backgroundColor: "#555",
+                        marginTop: "20px",
+                        padding: "14px",
+                        backgroundColor: "#292929",
                         color: "white",
                         border: "none",
-                        borderRadius: "5px",
+                        borderRadius: "8px",
                         fontSize: "16px",
+                        fontWeight: "600",
                         cursor: "pointer",
                         width: "100%",
+                        transition: "all 0.2s ease",
                     }}
                 >
                     Volver al Menú

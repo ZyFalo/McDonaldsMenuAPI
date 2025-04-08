@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosConfig";
-import MenuItemCard from "../components/MenuItemCard";
 
 function Home() {
     const [menuItems, setMenuItems] = useState([]);
