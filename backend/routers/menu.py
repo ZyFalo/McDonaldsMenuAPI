@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
-from models import MenuItem, UpdateMenuItem
-from database import menu_collection
+from backend.models import MenuItem, UpdateMenuItem
+from backend.database import menu_collection
 from bson import ObjectId
 from typing import List, Union
-from auth import get_current_user, User
+from backend.auth import get_current_user, User
 from pydantic import HttpUrl
 
 router = APIRouter(
