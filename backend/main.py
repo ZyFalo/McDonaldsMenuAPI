@@ -7,13 +7,15 @@ from backend.database import db
 
 app = FastAPI()
 
-# Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Permitir solicitudes desde el frontend
+    allow_origins=[
+        "http://localhost:3000",
+        "https://mcdonaldsmenuapi-production.up.railway.app"  # Agrega la URL de tu frontend
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
-    allow_headers=["*"],  # Permitir todos los encabezados
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Incluir los routers
