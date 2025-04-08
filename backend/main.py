@@ -11,7 +11,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://mcdonaldsmenuapi-production.up.railway.app"
+        "https://mcdonaldsmenuapi-production.up.railway.app",
         "https://motivated-manifestation-production.up.railway.app"  # Agrega la URL de tu frontend
     ],
     allow_credentials=True,
