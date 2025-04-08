@@ -46,7 +46,7 @@ function Home() {
                 background: "#fff" 
             }}>
                 <img 
-                    src="https://www.mcdonalds.com/content/dam/sites/usa/nfl/logo/mcdonalds-logo-full-color-128x128.jpg" 
+                    src="https://png.pngtree.com/png-vector/20240529/ourmid/pngtree-mcdonald-logo-logo-white-circle-black-vector-png-image_6974971.png" 
                     alt="McDonald's Logo" 
                     style={{ width: "80px", marginBottom: "20px" }} 
                 />
