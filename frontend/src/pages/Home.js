@@ -4,26 +4,44 @@ import MenuItemCard from "../components/MenuItemCard";
 
 function Home() {
     const [menuItems, setMenuItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         // Solicitud al endpoint GET /menu/
+        setLoading(true);
         axiosInstance.get("/menu/")
             .then((response) => {
-                setMenuItems(response.data);
+                // Asegúrate de que los datos son un array
+                const data = Array.isArray(response.data) ? response.data : [];
+                console.log("Datos recibidos:", data);
+                setMenuItems(data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error al obtener el menú:", error);
+                setError("Error al cargar el menú");
+                setMenuItems([]);
+                setLoading(false);
             });
     }, []);
 
-    // Agrupar los ítems por categoría
-    const groupedItems = menuItems.reduce((acc, item) => {
+    // Agrupar los ítems por categoría (con verificación de tipo)
+    const groupedItems = Array.isArray(menuItems) ? menuItems.reduce((acc, item) => {
         if (!acc[item.category]) {
             acc[item.category] = [];
         }
         acc[item.category].push(item);
         return acc;
-    }, {});
+    }, {}) : {};
+
+    if (loading) {
+        return <div style={{ textAlign: "center", padding: "50px" }}>Cargando menú...</div>;
+    }
+
+    if (error) {
+        return <div style={{ textAlign: "center", padding: "50px", color: "red" }}>{error}</div>;
+    }
 
     return (
         <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f8f8f8", minHeight: "100vh" }}>
@@ -32,7 +50,7 @@ function Home() {
                 <h1 style={{ color: "#d52b1e", margin: 0 }}>Menú</h1>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <button
-                        onClick={() => window.open("http://127.0.0.1:8000/docs", "_blank")}
+                        onClick={() => window.open("https://mcdonaldsmenuapi-production.up.railway.app/docs", "_blank")}
                         style={{
                             backgroundColor: "#555",
                             color: "white",
@@ -45,7 +63,7 @@ function Home() {
                         Doc. API
                     </button>
                     <button
-                        onClick={() => window.open("/login", "_blank")}
+                        onClick={() => window.location.href = "/login"}
                         style={{
                             backgroundColor: "#d52b1e",
                             color: "white",
@@ -63,7 +81,7 @@ function Home() {
             {/* Contenido del Menú */}
             <main style={{ padding: "20px" }}>
                 <h2 style={{ color: "#d52b1e", textAlign: "center" }}>Nuestros Productos</h2>
-                {menuItems.length === 0 ? (
+                {Object.keys(groupedItems).length === 0 ? (
                     <p style={{ textAlign: "center", color: "#555", fontSize: "18px", marginTop: "20px" }}>
                         No hay productos disponibles en el menú en este momento.
                     </p>
@@ -74,7 +92,7 @@ function Home() {
                             <div
                                 style={{
                                     display: "grid",
-                                    gridTemplateColumns: "repeat(3, 1fr)", // 3 columnas
+                                    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
                                     gap: "20px",
                                     justifyContent: "center",
                                     padding: "10px",
