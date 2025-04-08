@@ -70,7 +70,7 @@ function Home() {
                 ) : (
                     Object.keys(groupedItems).map((category) => (
                         <div key={category} style={{ marginBottom: "40px"}}>
-                            <h3 style={{ color: "#d52b1e", textAlign: "left", marginBottom: "10px", textAlign: "center" }}>{category}</h3>
+                            <h3 style={{ color: "#d52b1e", marginBottom: "10px", textAlign: "center" }}>{category}</h3>
                             <div
                                 style={{
                                     display: "grid",
