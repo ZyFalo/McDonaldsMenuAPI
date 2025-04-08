@@ -58,7 +58,7 @@ function Login() {
                 textAlign: "center",
             }}>
                 <img 
-                    src="https://www.mcdonalds.com/content/dam/sites/usa/nfl/logo/mcdonalds-logo-full-color-128x128.jpg" 
+                    src="https://w7.pngwing.com/pngs/873/995/png-transparent-mcdonald-s-logo-oldest-mcdonald-s-restaurant-ronald-mcdonald-logo-golden-arches-mcdonalds-miscellaneous-angle-food-thumbnail.png" 
                     alt="McDonald's Logo" 
                     style={{ width: "80px", marginBottom: "20px" }} 
                 />
