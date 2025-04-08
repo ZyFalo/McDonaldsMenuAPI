@@ -4,7 +4,7 @@ from jose import JWTError, jwt
 from datetime import datetime, timezone, timedelta
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
-from database import db  # Importa la conexión a MongoDB
+from backend.database import db  # Importa la conexión a MongoDB
 
 # Configuración del hashing de contraseñas
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

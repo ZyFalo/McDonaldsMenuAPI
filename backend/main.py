@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from backend.auth import authenticate_user, create_access_token, User, Token, hash_password
-from routers import menu
+from backend.routers import menu
 from backend.database import db
 
 app = FastAPI()
