@@ -1,6 +1,0 @@
-fastapi
-pydantic
-hypercorn
-pymongo
-python-jose
-passlib[bcrypt]
